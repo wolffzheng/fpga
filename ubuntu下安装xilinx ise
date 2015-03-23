@@ -1,0 +1,71 @@
+http://blog.csdn.net/suochao90/article/details/6916183
+
+版本：
+Ubuntu 10.04 LTS 32bit
+XILINX ISE 13.2
+
+
+步骤：
+1、登录china.xilinx.com，注册帐号（下载和获取证书需要登录，注册时有些选项需要用英文填写，确保所填邮箱正确）
+
+2、下载“Full Installer for Linux”（4.6GB）
+
+3、进入安装包所在文件夹，解压
+$cd /media/New/download（此命令根据自己的下载路径）
+$udo tar xvf Xilinx_ISE_DS_Lin_13.2_O.61xd.0.0.tar
+
+4、安装包被解压到当前目录，运行安装程序
+$cd Xilinx_ISE_DS_Lin_13.2_O.61xd.0.0
+$sudo ./xsetup
+安装程序是图形界面的，跟windows的安装程序差不多，根据提示进行就可以，会有两次选择，第一次选System Edition，第二次的选择全打勾，安装路径一般选择装在/opt下，配置好以后开始安装。安装过程中很有可能会提示驱动安装失败，先不管他；还会提示证书，这个也不管，关掉后会继续安装，直到结束。
+
+5、安装结束后，进入目录，先运行一个shell文件，配置环境变量，然后运行ISE
+$cd /opt/Xilinx/13.2/ISE_DS/
+$source settings32.sh
+$ise
+
+6、这个时候ISE可以打开，但是还不能正常使用，需要证书。选择Help-->Manage License...-->Acquire a License-->Get Free ISE WebPack License，然后点Next，Connect Now，这时候应该会弹出获取证书的网页，但是我设置的时候没有弹出来，不过没有关系，登录www.xilinx.com\getlicense，用刚才注册的账户登录，根据提示生成一个Xilinx.lic的证书，会自动发送到注册邮箱里，这个他们公司做的很不错，大家可以根据他们的提示完成。
+
+7、证书生成后，在ISE中选择选择Help-->Manage License...-->Acquire a License-->Get Free ISE WebPack License-->Next-->Connect Now-->Copy License...，然后选择刚才生成的证书，OK，现在已经可以编译程序了，但是还不能下载到开发板中，因为驱动还没有弄好。
+
+8、下载驱动源码并解压，地址：http://cvs.zerfleddert.de/cgi-bin/viewcvs.cgi/usb-driver.tar.gz
+$sudo tar xvfz xvfz usb-driver-HEAD-913cbbf.tar.gz
+
+9、安装libusb库
+$sudo apt-get install libusb-dev
+
+10、进入usb-driver-HEAD-913cbbf目录
+$sudo make
+
+11、将所生成的.so文件拷贝到某个path下，例如/usr/local/lib
+$sudo cp libusb-driver.so libusb-driber-DEBUG.so /usr/local/lib
+
+12、配置环境变量export LD_PRELOAD=/usr/local/lib/libusb-driver.so
+$cd /etc
+$sudo vim bash.bashrc（没有安装vim编辑器的话可以使用gedit或者vi打开文件）
+将这句话加在文件的最后面
+export LD_PRELOAD=/usr/local/lib/libusb-driver.so
+
+13、Copy the udev rules and adapt the file to the new udev-version（不要轻易修改50这个数字，这个与加载顺序有关。如果你的机器中已经有以50开头的rules，就请把这里的50往后顺延，比如51,52等等）
+$sudo cp /opt/Xilinx/13.2/ISE_DS/ISE/bin/lin/xusbdfwu.rules /etc/udev/rules.d/50-xusbdfwu.rules
+
+14、Copy the hex-files used by different Xilinx cables to /usr/share and make them readable by regular users
+$sudo cp /opt/Xilinx/13.2/ISE_DS/ISE/bin/lin/xusb*.hex /usr/share/
+$sudo sed -i -e 's/TEMPNODE/tempnode/' -e 's/SYSFS/ATTRS/g' -e 's/BUS/SUBSYSTEMS/' /etc/udev/rules.d/50-xusbdfwu.rules
+
+15、Install fxload, which is used by the rules
+$sudo apt-get install fxload
+
+16、Restart udev
+$sudo restart udev
+
+17、To make planAhead work two script files must be edited.
+$sudo sed -i -e 's/#!\/bin\/sh/#!\/bin\/bash/' /opt/Xilinx/13.2/ISE_DS/PlanAhead/bin/planAhead
+$sudo sed -i -e 's/#!\/bin\/sh/#!\/bin\/bash/' /opt/Xilinx/13.2/ISE_DS/PlanAhead/bin/loader
+
+完成了这一步，当你插上USB线的时候，驱动指示灯应该会亮了，整个安装过程算是结束了。
+
+
+以下为参考的两个文档的地址：
+http://www.kunli.info/2007/05/07/linux-fpga-howto2-usbcable/
+http://ubuntuforums.org/showthread.php?t=1547435
