@@ -1,0 +1,4 @@
+1.到官网去下载 logibone的ubuntu版本，该版本可以有HDMI 密码为：ubuntu:temppwd
+2. 登录 192.168.7.2 ssh登录 
+3. internet的连接，参考beaglebone
+4. 官网的版本下 直接运行logi_loader xxx.bit就可以了。logi_loader是配置好的
