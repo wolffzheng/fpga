@@ -1,0 +1,18 @@
+1.download && install icarus_verilog
+wget ftp://ftp.icarus.com/pub/eda/verilog/v0.9/verilog-0.9.7.tar.gz
+
+tar zxvf verilog-0.9.7.tar.gz
+
+cd verilog-0.9.7
+./configure (maybe you need sudo apt-get install flex gperf bison)
+make 
+make install
+
+2.install gtkwave
+sudo apt-get install gtkwave
+
+3.running
+iverilog xxx.v TB_xxx.v(TB_xxx.v is test bench file for xxx.v); this command will
+generout a xxx.out file
+vvp a.out
+gtkwave xxx.vcd
