@@ -1,0 +1,47 @@
+Initializing Block RAM (External Data File) Verilog Coding Example
+To initialize RAM from values contained in an external file, use a $readmemb or $readmemh system task in your
+Verilog code. For more information, see XST Behavioral Verilog Language Support. Set up the initialization file
+as follows.
+• Arrange each line of the initialization file to represent the initial contents of a given row in the RAM
+• RAM contents can be represented in binary or hexadecimal.
+• Use $readmemb for binary and $readmemh for hexadecimal representation. To avoid the possible difference
+between XST and simulator behavior, Xilinx® recommends that you use index parameters in these system
+tasks. See the following coding example:
+$readmemb("rams_20c.data",ram, 0, 7);
+Create as many lines in the file as there are rows in the RAM array.
+//
+// Initializing Block RAM from external data file
+//
+module v_rams_20c (clk, we, addr, din, dout);
+input clk;
+input we;
+input [5:0] addr;
+input [31:0] din;
+output [31:0] dout;
+reg [31:0] ram [0:63];
+reg [31:0] dout;
+initial
+begin
+$readmemb("rams_20c.data",ram, 0, 63);
+end
+always @(posedge clk)
+begin
+if (we)
+ram[addr] <= din;
+dout <= ram[addr];
+end
+endmodule
+
+Initializing Block RAM (External Data File)
+RAM initial values may be stored in an external data file that is accessed from within the HDL code. The data
+file must be pure binary or hexadecimal content with no comments or other information. Following is an
+example of the contents of a file initializing an 8 x 32-bit RAM with binary values. For both examples, the data
+file referenced is called rams_20c.data.
+00001111000011110000111100001111
+01001010001000001100000010000100
+00000000001111100000000001000001
+11111101010000011100010000100100
+00001111000011110000111100001111
+01001010001000001100000010000100
+00000000001111100000000001000001
+11111101010000011100010000100100
