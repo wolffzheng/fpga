@@ -1,0 +1,10 @@
+&&	Logical AND: if((a>b) && (a<c))......
+&	Bit-Wise AND: wire c
+			assign c=a&b;
+||	Logical OR
+| 	Bit-Wise OR
+{}	Concatenation: wire [7:0] a,b;
+		       wire [15:0] c;
+		       assign c={a,b}
+		       assign c={8{1'b0},a[3:0],b[3:0]};
+**	Exponent: z=x**y (幂次方）

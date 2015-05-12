@@ -1,10 +1,3 @@
-有三种方法可以设计ram/rom
-1. HDL Component instantiation，即调用现成的模板来初始化 EDIT-LANGUAGE TEMPLATE
-2. Core Generator
-3. HDL inference，也叫XST。根据XST的代码风格写代码，让XST infer出这是个ram/rom.具体的代码可以参考Xilinx Synthesis Technology(XST) User Guide
-
-一下就是个ram的参考代码：
-
 Initializing Block RAM (External Data File) Verilog Coding Example
 To initialize RAM from values contained in an external file, use a $readmemb or $readmemh system task in your
 Verilog code. For more information, see XST Behavioral Verilog Language Support. Set up the initialization file
