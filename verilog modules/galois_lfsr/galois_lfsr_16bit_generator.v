@@ -1,0 +1,62 @@
+`timescale 1ns / 1ps
+////////////////////////////////////////////////////////////////////////////////
+//
+// Company: 
+// Engineer: 
+// 
+// Create Date:    16:17:07 04/15/2015 
+// Design Name: 	 xianjun zheng
+// Module Name:    galois lfsr 16bits generator
+// Project Name: 
+// Target Devices: 
+// Tool versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision: 
+// Revision 0.01 - File Created
+// Additional Comments: 
+// formula is as followed: x16+x5+x4+x3+1
+////////////////////////////////////////////////////////////////////////////////
+//
+module galois_lfsr_16bit_generator(
+	input CLK,
+	input rstb,
+	input disable_,
+	output [15:0] data_out	
+    );
+
+localparam LFSR_INIT=16'hffff;
+reg [15:0] lfsr;
+wire [15:0] lfsr_next;
+
+assign data_out=lfsr;
+
+assign lfsr_next[0]=lfsr[15];
+assign lfsr_next[1]=lfsr[0];
+assign lfsr_next[2]=lfsr[1];
+assign lfsr_next[3]=lfsr[2]^lfsr[15];
+assign lfsr_next[4]=lfsr[3]^lfsr[15];
+assign lfsr_next[5]=lfsr[4]^lfsr[15];
+assign lfsr_next[6]=lfsr[5];
+assign lfsr_next[7]=lfsr[6];
+assign lfsr_next[8]=lfsr[7];
+assign lfsr_next[9]=lfsr[8];
+assign lfsr_next[10]=lfsr[9];
+assign lfsr_next[11]=lfsr[10];
+assign lfsr_next[12]=lfsr[11];
+assign lfsr_next[13]=lfsr[12];
+assign lfsr_next[14]=lfsr[13];
+assign lfsr_next[15]=lfsr[14];
+
+always @(posedge CLK or negedge rstb) begin
+	if(!rstb)
+		lfsr<=LFSR_INIT;
+	else if(disable_)
+		lfsr<=lfsr;
+	else lfsr<=lfsr_next;
+end
+
+endmodule
+
