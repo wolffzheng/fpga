@@ -23,7 +23,7 @@
 module galois_lfsr_16bit_generator(
 	input CLK,
 	input rstb,
-	input disable_,
+	input disabled,
 	output [15:0] data_out	
     );
 
@@ -49,6 +49,14 @@ assign lfsr_next[12]=lfsr[11];
 assign lfsr_next[13]=lfsr[12];
 assign lfsr_next[14]=lfsr[13];
 assign lfsr_next[15]=lfsr[14];
+
+always @(posedge CLK or negedge rstb) begin
+	if(!rstb)
+		lfsr<=LFSR_INIT;
+	else if(disabled)
+		lfsr<=lfsr;
+	else lfsr<=lfsr_next;
+end
 
 endmodule
 
