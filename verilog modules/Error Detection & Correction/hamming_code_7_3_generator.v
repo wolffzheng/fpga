@@ -16,7 +16,7 @@
 // 
 // Revision: 
 // Revision 0.01 - File Created
-// Additional Comments: 
+// Additional Comments: din[6:3] information bit,din[2:0] additional bit
 // formula is as followed: a6=a6 a5=a5 a4=a4 a3=a3 a2=a6+a5+a4 a1=a6+a5+a3 a0=a6+a4+a3
 // a6 a5 a4 a3 are data input, a6-a0 are data output
 ////////////////////////////////////////////////////////////////////////////////

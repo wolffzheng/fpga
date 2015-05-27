@@ -1,0 +1,122 @@
+#! /usr/local/bin/vvp
+:ivl_version "0.9.7 " "(v0_9_7)";
+:vpi_time_precision - 12;
+:vpi_module "system";
+:vpi_module "v2005_math";
+:vpi_module "va_math";
+S_0x17b5b70 .scope module, "test_binary_to_grey" "test_binary_to_grey" 2 25;
+ .timescale -9 -12;
+v0x17cce90_0 .var "CLK_50M", 0 0;
+v0x17ccf50_0 .var "binary", 3 0;
+RS_0x7fceff6b7228 .resolv tri, L_0x17cd0b0, L_0x17cd4b0, L_0x17cd890, L_0x17cdc50;
+v0x17cd000_0 .net8 "data_out", 3 0, RS_0x7fceff6b7228; 4 drivers
+S_0x17b5c60 .scope module, "u1" "binary_to_gray" 2 33, 3 22, S_0x17b5b70;
+ .timescale -9 -12;
+P_0x17b5fe8 .param/l "PTR" 3 22, +C4<011>;
+v0x17ccc90_0 .net *"_s15", 0 0, L_0x17cdd50; 1 drivers
+v0x17ccd50_0 .net "binary_value", 3 0, v0x17ccf50_0; 1 drivers
+v0x17ccdf0_0 .alias "gray_value", 3 0, v0x17cd000_0;
+L_0x17cd0b0 .part/pv L_0x17cd360, 0, 1, 4;
+L_0x17cd1a0 .part v0x17ccf50_0, 0, 1;
+L_0x17cd2c0 .part v0x17ccf50_0, 1, 1;
+L_0x17cd4b0 .part/pv L_0x17cd790, 1, 1, 4;
+L_0x17cd550 .part v0x17ccf50_0, 1, 1;
+L_0x17cd680 .part v0x17ccf50_0, 2, 1;
+L_0x17cd890 .part/pv L_0x17cdb00, 2, 1, 4;
+L_0x17cd9c0 .part v0x17ccf50_0, 2, 1;
+L_0x17cda60 .part v0x17ccf50_0, 3, 1;
+L_0x17cdc50 .part/pv L_0x17cdd50, 3, 1, 4;
+L_0x17cdd50 .part v0x17ccf50_0, 3, 1;
+S_0x17cc900 .scope generate, "genblk1" "genblk1" 3 28, 3 28, S_0x17b5c60;
+ .timescale -9 -12;
+P_0x17cc9f8 .param/l "i" 3 28, +C4<00>;
+L_0x17cd360 .functor XOR 1, L_0x17cd1a0, L_0x17cd2c0, C4<0>, C4<0>;
+v0x17ccab0_0 .net *"_s0", 0 0, L_0x17cd1a0; 1 drivers
+v0x17ccb50_0 .net *"_s1", 0 0, L_0x17cd2c0; 1 drivers
+v0x17ccbf0_0 .net *"_s2", 0 0, L_0x17cd360; 1 drivers
+S_0x17cc570 .scope generate, "genblk01" "genblk01" 3 28, 3 28, S_0x17b5c60;
+ .timescale -9 -12;
+P_0x17cc668 .param/l "i" 3 28, +C4<01>;
+L_0x17cd790 .functor XOR 1, L_0x17cd550, L_0x17cd680, C4<0>, C4<0>;
+v0x17cc720_0 .net *"_s0", 0 0, L_0x17cd550; 1 drivers
+v0x17cc7c0_0 .net *"_s1", 0 0, L_0x17cd680; 1 drivers
+v0x17cc860_0 .net *"_s2", 0 0, L_0x17cd790; 1 drivers
+S_0x17a6b10 .scope generate, "genblk001" "genblk001" 3 28, 3 28, S_0x17b5c60;
+ .timescale -9 -12;
+P_0x17a6c08 .param/l "i" 3 28, +C4<010>;
+L_0x17cdb00 .functor XOR 1, L_0x17cd9c0, L_0x17cda60, C4<0>, C4<0>;
+v0x17b4c20_0 .net *"_s0", 0 0, L_0x17cd9c0; 1 drivers
+v0x17cc430_0 .net *"_s1", 0 0, L_0x17cda60; 1 drivers
+v0x17cc4d0_0 .net *"_s2", 0 0, L_0x17cdb00; 1 drivers
+    .scope S_0x17b5b70;
+T_0 ;
+    %set/v v0x17cce90_0, 0, 1;
+    %delay 10000, 0;
+    %set/v v0x17cce90_0, 1, 1;
+    %delay 10000, 0;
+    %jmp T_0;
+    .thread T_0;
+    .scope S_0x17b5b70;
+T_1 ;
+    %vpi_call 2 46 "$dumpfile", "grey.vcd";
+    %vpi_call 2 47 "$dumpvars", v0x17cd000_0;
+    %end;
+    .thread T_1;
+    .scope S_0x17b5b70;
+T_2 ;
+    %delay 20000, 0;
+    %set/v v0x17ccf50_0, 0, 4;
+    %delay 20000, 0;
+    %movi 8, 1, 4;
+    %set/v v0x17ccf50_0, 8, 4;
+    %delay 20000, 0;
+    %movi 8, 2, 4;
+    %set/v v0x17ccf50_0, 8, 4;
+    %delay 20000, 0;
+    %movi 8, 3, 4;
+    %set/v v0x17ccf50_0, 8, 4;
+    %delay 20000, 0;
+    %movi 8, 4, 4;
+    %set/v v0x17ccf50_0, 8, 4;
+    %delay 20000, 0;
+    %movi 8, 5, 4;
+    %set/v v0x17ccf50_0, 8, 4;
+    %delay 20000, 0;
+    %movi 8, 6, 4;
+    %set/v v0x17ccf50_0, 8, 4;
+    %delay 20000, 0;
+    %movi 8, 7, 4;
+    %set/v v0x17ccf50_0, 8, 4;
+    %delay 20000, 0;
+    %movi 8, 8, 4;
+    %set/v v0x17ccf50_0, 8, 4;
+    %delay 20000, 0;
+    %movi 8, 9, 4;
+    %set/v v0x17ccf50_0, 8, 4;
+    %delay 20000, 0;
+    %movi 8, 10, 4;
+    %set/v v0x17ccf50_0, 8, 4;
+    %delay 20000, 0;
+    %movi 8, 11, 4;
+    %set/v v0x17ccf50_0, 8, 4;
+    %delay 20000, 0;
+    %movi 8, 12, 4;
+    %set/v v0x17ccf50_0, 8, 4;
+    %delay 20000, 0;
+    %movi 8, 13, 4;
+    %set/v v0x17ccf50_0, 8, 4;
+    %delay 20000, 0;
+    %movi 8, 14, 4;
+    %set/v v0x17ccf50_0, 8, 4;
+    %delay 20000, 0;
+    %set/v v0x17ccf50_0, 1, 4;
+    %delay 100000, 0;
+    %vpi_call 2 69 "$finish";
+    %end;
+    .thread T_2;
+# The file index is used to find the file name in the following table.
+:file_names 4;
+    "N/A";
+    "<interactive>";
+    "test_binary_to_gray.v";
+    "binary_to_gray.v";
