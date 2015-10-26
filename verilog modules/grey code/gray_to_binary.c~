@@ -1,0 +1,37 @@
+#include <stdint.h>
+#include <stdio.h>
+
+
+int output[4];
+int gray_array[16]={0,1,10,11,100,101,110,111,1000,1001,1010,1011,1100,1101,1110,1111};
+
+int convert_to_binary(int gray){
+	int i=0;
+	int temp=gray;
+	int gray_num[4];
+	gray_num[3]=temp / 1000;
+	temp -=1000*gray_num[3];
+	gray_num[2]=temp / 100;
+	temp -=100*gray_num[2];
+	gray_num[1]=temp / 10;
+	temp -=10*gray_num[1];
+	gray_num[0]=temp;
+	output[3]=gray_num[3];
+	for (i=2;i>=0;i--)
+		output[i]=output[i+1]^gray_num[i];
+	return 1;
+}
+
+int main(){
+	printf("This program will generate 4 bit grey code\n");
+	int i=0;
+	int m=0;
+	for(i=0;i<16;i++){
+		convert_to_binary(gray_array[i]);
+		printf("%d:",gray_array[i]);
+		for(m=0;m<4;m++)
+			printf("%d",output[m]);
+		printf("\n");
+	}
+
+}
